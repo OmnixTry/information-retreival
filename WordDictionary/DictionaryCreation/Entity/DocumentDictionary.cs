@@ -9,7 +9,8 @@ namespace WordDictionary.DictionaryCreation.Entity
 	public class DocumentDictionary
 	{
 		public List<DocumentEntity> Documents { get; set; }
-		public SortedSet<string> Dictionary { get; set; }
+		public ISet<string> Dictionary { get; set; }
 		public Dictionary<string, LinkedList<int>> Index { get; set; }
+		public WordMatrix WordMatrix { get; set; }
 	}
 }

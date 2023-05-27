@@ -1,8 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using LemmaSharp;
 using LemmaSharp.Classes;
 using System.IO.Enumeration;
 using WordDictionary.DictionaryCreation;
+using WordDictionary.DictionaryCreation.Impl;
 using WordDictionary.DocumentReaders.Impl;
+using WordDictionary.Search.Impl;
 
 Console.WriteLine("Hello, World!");
 
@@ -17,7 +20,19 @@ const string fileName8 = "O. Henry, - New Yorkers. Short Stories (2012-6-2) - li
 const string fileName9 = "O. Henry, - The Four Million (14.10.2013, MOST Publishing) - libgen.li.fb2";
 const string fileName10 = "15641636.fb2";
 const string fileName11 = "279770.fb2";
-var dictCreator = new DictionaryCreator();
+
+// init lemm
+Lemmatizer lemmatizer;
+string lemmFilePath = "H:\\Programming\\MAG Semester 3\\Information Retreival\\01Dictionary\\WordDictionary\\WordDictionary\\bin\\Debug\\net6.0\\full7z-mlteast-en.lem";
+using (var stream = File.OpenRead(lemmFilePath))
+{
+	lemmatizer = new Lemmatizer(stream);
+	var result = lemmatizer.Lemmatize("doing");
+}
+
+
+
+var dictCreator = new DictionaryCreator(lemmatizer);
 var dict = await dictCreator.CreateDictionary(fileName, fileName2, fileName3, fileName4, fileName5, fileName6, fileName7, fileName8, fileName9, fileName10);
 
 Console.WriteLine("Results:");
@@ -31,8 +46,26 @@ await jsonSaver.SaveFile(dict, "FirstDict.json");
 var readDictJson = await jsonSaver.ReadFile("FirstDict.json");
 Console.WriteLine("Done Json");
 
+var boolSearcher = new BoolSearcher(lemmatizer);
+var indexSearcher = new InvertedIndexSearcher(lemmatizer);
 
-var txtSaver = new TxtDictSaver();
-await txtSaver.SaveFile(dict, "FirstDict.txt");
-var readDict = await txtSaver.ReadFile("FirstDict.txt");
-Console.WriteLine("Done Txt");
+
+
+//string querry = "book AND NOT henry OR NOT hellish";
+string querry = "heir OR hemorrhage AND NOT hence";
+var res = boolSearcher.SearchOnMatrix(querry, dict);
+Console.WriteLine(querry);
+Console.WriteLine("Matrix");
+foreach (var item in res)
+{
+	Console.Write($"{item} ");
+}
+Console.WriteLine();
+
+res = indexSearcher.SearchOnMatrix(querry, dict);
+Console.WriteLine("Index");
+foreach (var item in res)
+{
+	Console.Write($"{item} ");
+}
+Console.WriteLine();
