@@ -23,6 +23,8 @@ namespace WordDictionary.DictionaryCreation.Entity
 		public DocumentWords DocumentWords;
 		[NonSerialized]
 		public string[] UniqueWords;
+		[NonSerialized]
+		public (string word, int[] positions)[] IndexedWords;
 		public int WordCount { get; set; }
 	}
 }

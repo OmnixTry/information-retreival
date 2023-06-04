@@ -45,6 +45,29 @@ namespace WordDictionary.Search.Impl
 			return ElicitResultingDocuments();
 		}
 
+		public int[] SearchOnMatrix(List<SearchOperation> operations, DocumentDictionary dictionary)
+		{
+			context = new BoolSearchContext<TOperand>() { DocumentDictionary = dictionary };
+
+			foreach (var operation in operations)
+			{
+				switch (operation.Operation)
+				{
+					case BoolOperationEnum.None:
+						ProcessNone(operation);
+						break;
+					case BoolOperationEnum.And:
+						ProcessAnd(operation);
+						break;
+					case BoolOperationEnum.Or:
+						ProcessOr(operation);
+						break;
+				}
+			}
+
+			return ElicitResultingDocuments();
+		}
+
 		private List<SearchOperation> ParseQuerry(string querry)
 		{
 			var splited = querry.Split(' ');

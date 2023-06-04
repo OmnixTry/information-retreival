@@ -54,7 +54,13 @@ namespace WordDictionary.DocumentReaders.Impl
 		private string[] FlattenBook(FB2File file)
 		{
 			var regex = new Regex("[a-zA-Z][.][a-zA-Z]");
-			var beforeFiltering = file.Bodies.SelectMany(b => b.Sections).SelectMany(s => s.Content).Select(c => c.ToString()).ToArray();
+			var beforeFiltering = file.Bodies.SelectMany(b => b.Sections).SelectMany(s => s.Content).Select(c => {
+				if(c is FB2Library.Elements.SectionItem)
+				{
+					return string.Concat((c as FB2Library.Elements.SectionItem).Content.Select(c => c.ToString()));
+				}
+				return c.ToString();
+			}).ToArray();
 			return beforeFiltering.Where(e => e != "\n" && !regex.IsMatch(e)).ToArray();
 		}
 

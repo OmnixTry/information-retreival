@@ -22,6 +22,17 @@ namespace WordDictionary.DocumentReaders.Impl
 			await File.WriteAllTextAsync(fileName, jsonValue);
 		}
 
+		public async Task SaveFile(object document, string fileName)
+		{
+			var options = new JsonSerializerOptions
+			{
+				Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+			};
+
+			string jsonValue = JsonSerializer.Serialize(document, options);
+			await File.WriteAllTextAsync(fileName, jsonValue);
+		}
+
 		public async Task<DocumentDictionary> ReadFile(string fileName)
 		{
 			var allText = await File.ReadAllTextAsync(fileName);

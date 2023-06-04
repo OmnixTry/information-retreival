@@ -2,6 +2,7 @@
 using LemmaSharp;
 using LemmaSharp.Classes;
 using System.IO.Enumeration;
+using System.Numerics;
 using WordDictionary.DictionaryCreation;
 using WordDictionary.DictionaryCreation.Impl;
 using WordDictionary.DocumentReaders.Impl;
@@ -21,14 +22,22 @@ const string fileName9 = "O. Henry, - The Four Million (14.10.2013, MOST Publish
 const string fileName10 = "15641636.fb2";
 const string fileName11 = "279770.fb2";
 
-// init lemm
+//string[] fileNames = new string[] { fileName, fileName2, fileName3, fileName4, fileName5, fileName6, fileName7, fileName8, fileName9, fileName10 };
+string[] fileNames = new string[] { fileName, fileName2, fileName3, fileName4, fileName5, fileName6, fileName7, fileName8, fileName9, fileName10 };
 Lemmatizer lemmatizer;
+var jsonSaver = new JsonDictSaver();
+
 string lemmFilePath = "H:\\Programming\\MAG Semester 3\\Information Retreival\\01Dictionary\\WordDictionary\\WordDictionary\\bin\\Debug\\net6.0\\full7z-mlteast-en.lem";
 using (var stream = File.OpenRead(lemmFilePath))
 {
 	lemmatizer = new Lemmatizer(stream);
-	var result = lemmatizer.Lemmatize("doing");
 }
+
+//
+// LAB 2
+//
+/*
+
 
 
 
@@ -50,8 +59,6 @@ var boolSearcher = new BoolSearcher(lemmatizer);
 var indexSearcher = new InvertedIndexSearcher(lemmatizer);
 
 
-
-//string querry = "book AND NOT henry OR NOT hellish";
 string querry = "heir OR hemorrhage AND NOT hence";
 var res = boolSearcher.SearchOnMatrix(querry, dict);
 Console.WriteLine(querry);
@@ -69,3 +76,50 @@ foreach (var item in res)
 	Console.Write($"{item} ");
 }
 Console.WriteLine();
+*/
+
+//
+// LAB 3
+//
+
+// pairwise
+
+/*
+var dictCreator = new PairwiseDictionaryCreator(lemmatizer);
+
+var dictionary = await dictCreator.CreateDictionary(fileNames);
+
+await jsonSaver.SaveFile(dictionary, "pairwiseDict.json");
+
+var searcher = new PairwiseSearcher(new InvertedIndexSearcher(lemmatizer), lemmatizer);
+
+var res = searcher.SearchDocuments("in her hand gripped", dictionary);
+foreach (var item in res)
+{
+	Console.WriteLine(item);
+}
+*/
+
+// positional
+var positionalDictCreator = new PositionalDictionaryCreator(lemmatizer);
+var positionalIndex = await positionalDictCreator.CreateDictionary(fileNames);
+var positionalSearcher = new PositionalIndexSearcher(lemmatizer);
+await jsonSaver.SaveFile((object)positionalIndex, "positionalIndex.json");
+//var resPositional = positionalSearcher.SearchByQuerry("while /2 holmes", positionalIndex, out var pp1Index);
+var resPositional = positionalSearcher.SearchByQuerry("presume /2 you /2 looked", positionalIndex, out var pp1Index);
+foreach (var item in resPositional)
+{
+	Console.WriteLine(item);
+}
+
+foreach (var item in pp1Index)
+{
+	var doc = positionalIndex.Documents.First(d => d.Id == item.docId);
+	var words = positionalDictCreator.AllWords(doc.DocumentWords);
+
+	// debug here to take a look at sentances!!!
+	var close = words.Skip(item.index - 10).Take(20).ToArray();
+	
+	Console.WriteLine(item.docId + " " + item.index);
+	Console.WriteLine(string.Join(' ', close));
+}
