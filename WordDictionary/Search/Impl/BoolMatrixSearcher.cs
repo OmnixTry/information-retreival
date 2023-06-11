@@ -9,9 +9,9 @@ using WordDictionary.Search.Entity;
 
 namespace WordDictionary.Search.Impl
 {
-    public class BoolSearcher : SearcherBase<bool[]>
+    public class BoolMatrixSearcher : SearcherBase<bool[]>
     {
-        public BoolSearcher(Lemmatizer lemmatizer) : base(lemmatizer)
+        public BoolMatrixSearcher(Lemmatizer lemmatizer) : base(lemmatizer)
         {
         }
 

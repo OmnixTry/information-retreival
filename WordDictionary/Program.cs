@@ -6,6 +6,8 @@ using System.Numerics;
 using WordDictionary.DictionaryCreation;
 using WordDictionary.DictionaryCreation.Impl;
 using WordDictionary.DocumentReaders.Impl;
+using WordDictionary.JokerSearch;
+using WordDictionary.JokerSearch.SuffixTree;
 using WordDictionary.Search.Impl;
 
 Console.WriteLine("Hello, World!");
@@ -24,6 +26,8 @@ const string fileName11 = "279770.fb2";
 
 //string[] fileNames = new string[] { fileName, fileName2, fileName3, fileName4, fileName5, fileName6, fileName7, fileName8, fileName9, fileName10 };
 string[] fileNames = new string[] { fileName, fileName2, fileName3, fileName4, fileName5, fileName6, fileName7, fileName8, fileName9, fileName10 };
+
+/*
 Lemmatizer lemmatizer;
 var jsonSaver = new JsonDictSaver();
 
@@ -32,15 +36,15 @@ using (var stream = File.OpenRead(lemmFilePath))
 {
 	lemmatizer = new Lemmatizer(stream);
 }
-
+*/
 //
 // LAB 2
 //
+
+
+
+
 /*
-
-
-
-
 var dictCreator = new DictionaryCreator(lemmatizer);
 var dict = await dictCreator.CreateDictionary(fileName, fileName2, fileName3, fileName4, fileName5, fileName6, fileName7, fileName8, fileName9, fileName10);
 
@@ -50,12 +54,12 @@ Console.WriteLine($"Total Words:		{ dict.Documents.Sum(d => d.WordCount) }");
 Console.WriteLine($"Dictionary size:	{ dict.Dictionary.Count }");
 
 
-var jsonSaver = new JsonDictSaver();
+jsonSaver = new JsonDictSaver();
 await jsonSaver.SaveFile(dict, "FirstDict.json");
 var readDictJson = await jsonSaver.ReadFile("FirstDict.json");
 Console.WriteLine("Done Json");
 
-var boolSearcher = new BoolSearcher(lemmatizer);
+var boolSearcher = new BoolMatrixSearcher(lemmatizer);
 var indexSearcher = new InvertedIndexSearcher(lemmatizer);
 
 
@@ -101,6 +105,8 @@ foreach (var item in res)
 */
 
 // positional
+
+/*
 var positionalDictCreator = new PositionalDictionaryCreator(lemmatizer);
 var positionalIndex = await positionalDictCreator.CreateDictionary(fileNames);
 var positionalSearcher = new PositionalIndexSearcher(lemmatizer);
@@ -123,3 +129,11 @@ foreach (var item in pp1Index)
 	Console.WriteLine(item.docId + " " + item.index);
 	Console.WriteLine(string.Join(' ', close));
 }
+*/
+
+// Lab 4
+
+var runLab4 = new RunLab4();
+//await runLab4.Run1(fileNames);
+//await runLab4.Run2(fileNames);
+await runLab4.Run3(fileNames);

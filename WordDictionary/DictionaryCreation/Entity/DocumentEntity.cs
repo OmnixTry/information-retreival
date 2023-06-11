@@ -22,6 +22,8 @@ namespace WordDictionary.DictionaryCreation.Entity
 		[NonSerialized]
 		public DocumentWords DocumentWords;
 		[NonSerialized]
+		public string[] AllWords;
+		[NonSerialized]
 		public string[] UniqueWords;
 		[NonSerialized]
 		public (string word, int[] positions)[] IndexedWords;
