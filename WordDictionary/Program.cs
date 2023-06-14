@@ -8,6 +8,7 @@ using WordDictionary.DictionaryCreation.Impl;
 using WordDictionary.DocumentReaders.Impl;
 using WordDictionary.JokerSearch;
 using WordDictionary.JokerSearch.SuffixTree;
+using WordDictionary.LuceneSearch;
 using WordDictionary.Search.Impl;
 
 Console.WriteLine("Hello, World!");
@@ -133,7 +134,10 @@ foreach (var item in pp1Index)
 
 // Lab 4
 
-var runLab4 = new RunLab4();
+//var runLab4 = new RunLab4();
 //await runLab4.Run1(fileNames);
 //await runLab4.Run2(fileNames);
-await runLab4.Run3(fileNames);
+//await runLab4.Run3(fileNames);
+
+var runLab6 = new RunLab6();
+await runLab6.Run(fileNames);

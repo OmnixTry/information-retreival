@@ -8,6 +8,8 @@ namespace WordDictionary.DocumentReaders.Entity
 {
     public class DocumentWords
     {
+        public string BookName { get; set; }
+        public string Author { get; set; }
         public string[] FlattenedParagraphs { get; set; }
         //public string[] UniqueWords { get; set; }
         //public int WordCount { get; set; }

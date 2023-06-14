@@ -127,7 +127,7 @@ namespace WordDictionary.DictionaryCreation.Impl
                 .ToArray();
         }
 
-        private async Task<DocumentWords> ProcessDocument(string fileName)
+        public async Task<DocumentWords> ProcessDocument(string fileName)
         {
             var reader = GetReader(fileName);
             return await reader.ReadDocument(fileName);

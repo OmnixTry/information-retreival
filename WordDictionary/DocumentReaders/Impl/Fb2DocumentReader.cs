@@ -21,15 +21,18 @@ namespace WordDictionary.DocumentReaders.Impl
 		public async Task<DocumentWords> ReadDocument(string fileName)
 		{
 			var file = await ReadFb2(fileName);
-
+			
 			var flattenedParagraphs = FlattenBook(file);
 			//var uniqueWords = GetUniqueWords(flattenedParagraphs, out int wordCount);
-
+			var authMeta = file.TitleInfo.BookAuthors.FirstOrDefault();
+			string author = authMeta == null ? "" : $"{authMeta.FirstName} {authMeta.MiddleName} {authMeta.LastName}";
 			return new DocumentWords()
 			{
 				//UniqueWords = uniqueWords,
 				FlattenedParagraphs = flattenedParagraphs,
 				//WordCount = wordCount
+				Author = author,
+				BookName = file.TitleInfo?.BookTitle?.Text ?? "",
 			};
 		}
 
