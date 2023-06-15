@@ -9,6 +9,7 @@ using WordDictionary.DocumentReaders.Impl;
 using WordDictionary.JokerSearch;
 using WordDictionary.JokerSearch.SuffixTree;
 using WordDictionary.LuceneSearch;
+using WordDictionary.PostgresIntegration;
 using WordDictionary.Search.Impl;
 
 Console.WriteLine("Hello, World!");
@@ -139,5 +140,9 @@ foreach (var item in pp1Index)
 //await runLab4.Run2(fileNames);
 //await runLab4.Run3(fileNames);
 
-var runLab6 = new RunLab6();
-await runLab6.Run(fileNames);
+var runLab5 = new RunLab5();
+//await runLab5.LoadIntoDb(fileNames);
+await runLab5.Run();
+
+//var runLab6 = new RunLab6();
+//await runLab6.Run(fileNames);
