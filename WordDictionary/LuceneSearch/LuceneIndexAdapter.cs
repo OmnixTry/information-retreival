@@ -53,7 +53,7 @@ namespace WordDictionary.LuceneSearch
 
 			QueryParser parser = new MultiFieldQueryParser(luceneVersion, new[] { "bookBody", "author", "bookName" }, standardAnalyzer);
 			Query query = parser.Parse(textToSearch);
-			TopDocs topDocs = searcher.Search(query, n: 5);         //indicate we want the first 3 results
+			TopDocs topDocs = searcher.Search(query, n: topQuantity);         //indicate we want the first 3 results
 
 			Console.WriteLine($"Matching results: {topDocs.TotalHits}");
 

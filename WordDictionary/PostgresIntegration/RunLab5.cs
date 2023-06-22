@@ -58,8 +58,6 @@ namespace WordDictionary.PostgresIntegration
 		{
 			using (LibraryDbContext db = new LibraryDbContext())
 			{
-
-
 				var bookRepo = new BookRepository(db);
 				while (true)
 				{

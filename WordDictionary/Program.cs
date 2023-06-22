@@ -6,6 +6,8 @@ using System.Numerics;
 using WordDictionary.DictionaryCreation;
 using WordDictionary.DictionaryCreation.Impl;
 using WordDictionary.DocumentReaders.Impl;
+using WordDictionary.IndexBuildingAlgo;
+using WordDictionary.IndexCompression;
 using WordDictionary.JokerSearch;
 using WordDictionary.JokerSearch.SuffixTree;
 using WordDictionary.LuceneSearch;
@@ -140,9 +142,15 @@ foreach (var item in pp1Index)
 //await runLab4.Run2(fileNames);
 //await runLab4.Run3(fileNames);
 
-var runLab5 = new RunLab5();
+//var runLab5 = new RunLab5();
 //await runLab5.LoadIntoDb(fileNames);
-await runLab5.Run();
+//await runLab5.Run();
 
 //var runLab6 = new RunLab6();
 //await runLab6.Run(fileNames);
+
+//var runLab7 = new RunLab7();
+//await runLab7.Run(fileNames);
+
+var runLab8 = new RunLab8();
+await runLab8.Run(fileNames);

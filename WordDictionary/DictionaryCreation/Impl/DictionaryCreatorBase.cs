@@ -80,6 +80,8 @@ namespace WordDictionary.DictionaryCreation.Impl
             return await reader.ReadDocument(fileName);
         }
 
+
+
         protected IDocumentReader GetReader(string fileName)
         {
             string format = fileName.Split('.').Last();
