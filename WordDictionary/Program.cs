@@ -151,6 +151,10 @@ foreach (var item in pp1Index)
 
 //var runLab7 = new RunLab7();
 //await runLab7.Run(fileNames);
+//await runLab7.RunLargeDb();
+
 
 var runLab8 = new RunLab8();
-await runLab8.Run(fileNames);
+//await runLab8.RunCompress(fileNames);
+runLab8.RunDeCompress();
+//await runLab8.RunCompressLargeDb();

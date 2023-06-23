@@ -27,5 +27,17 @@ namespace WordDictionary.IndexBuildingAlgo
 			
 			indexBuilder.BuildIndex(fileNames);
 		}
+
+		public async Task RunLargeDb()
+		{
+			string[] allfiles = Directory.GetFiles("H:\\words\\Programming Sample Data Fanfics\\FanFictions(2600).English.language", "*.fb2", SearchOption.AllDirectories);
+
+			var indexBuilder = new BsBiIndexBuilder(lemmatizer);
+			
+			//indexBuilder.BuildIndex(allfiles.Take(10).ToArray());
+
+			indexBuilder.BuildIndex(allfiles.ToArray());
+
+		}
 	}
 }

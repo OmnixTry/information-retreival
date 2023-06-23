@@ -84,7 +84,7 @@ namespace WordDictionary.DictionaryCreation.Impl
 
         protected IDocumentReader GetReader(string fileName)
         {
-            string format = fileName.Split('.').Last();
+            string format = fileName.Split('.').Last().ToLower();
             var reader = readers.FirstOrDefault(r => r.SupportedFormats.Contains(format));
             if (reader == null)
             {

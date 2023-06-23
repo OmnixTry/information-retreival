@@ -11,8 +11,8 @@ namespace WordDictionary.IndexBuildingAlgo
 {
 	public class BsBiIndexBuilder : DictionaryCreatorBase
 	{
-		const int quantityPerBlock = 1000;
-		const int blockQty = 3;
+		const int quantityPerBlock = 100000;
+		const int blockQty = 10;
 		
 		BlockItem[] blockItems = new BlockItem[quantityPerBlock];
 		int blocksStashed = 1;
@@ -28,10 +28,18 @@ namespace WordDictionary.IndexBuildingAlgo
 			var mergedFile = File.Open(BuildBlockFileName(0), FileMode.Create);
 			mergedFile.Dispose();
 
+			Console.WriteLine($"TotalFiles {fileNames.Length}");
 			for(int i = 0; i < fileNames.Length; i++)
 			{
 				ProcessFile(fileNames[i], i);
+
+				if(i % 10 == 0)
+				{
+					Console.WriteLine($"{i}/{fileNames.Length}");
+				}
 			}
+			StashBlockToFile(true);
+
 		}
 
 		private void ProcessFile(string fileName, int id)
@@ -51,9 +59,9 @@ namespace WordDictionary.IndexBuildingAlgo
 				}
 			}
 		}
-		private void StashBlockToFile()
+		private void StashBlockToFile(bool merge = false)
 		{
-			var indexedItems = blockItems.GroupBy(b => b.Word)
+			var indexedItems = blockItems.Where(i => i!=null).GroupBy(b => b.Word)
 				.Select(b => new BlockIndexedItem(b.Key, b))
 				.OrderBy(w => w.Word)
 				.ToArray();
@@ -62,9 +70,9 @@ namespace WordDictionary.IndexBuildingAlgo
 
 			currentBlockCapacity = 0;
 			blocksStashed++;
-			if(blocksStashed == blockQty)
+			if(blocksStashed == blockQty || merge)
 			{
-				MergeBlocks();
+				MergeBlocks(blocksStashed);
 			}
 		}
 
@@ -73,13 +81,13 @@ namespace WordDictionary.IndexBuildingAlgo
 
 		}
 
-		private void MergeBlocks()
+		private void MergeBlocks(int current)
 		{
 			var resultFile = new StreamWriter("tempMergeResult.txt");
 			// oppen all files
-			var files = new StreamReader[blockQty];
-			var currentWordInFile = new BlockIndexedItem[blockQty];
-			for (int i = 0; i < blockQty; i++)
+			var files = new StreamReader[current];
+			var currentWordInFile = new BlockIndexedItem[current];
+			for (int i = 0; i < current; i++)
 			{
 				files[i] = new StreamReader(BuildBlockFileName(i));
 				files[i].BaseStream.Position = 0;
@@ -108,6 +116,7 @@ namespace WordDictionary.IndexBuildingAlgo
 					currentWordInFile[file.i] = ReadNext(files[file.i]);
 				}
 			}
+
 
 			foreach(var file in files)
 			{

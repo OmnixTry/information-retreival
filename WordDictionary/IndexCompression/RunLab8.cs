@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using WordDictionary.IndexBuildingAlgo;
+using WordDictionary.Search.Impl;
 
 namespace WordDictionary.IndexCompression
 {
@@ -21,10 +22,13 @@ namespace WordDictionary.IndexCompression
 				lemmatizer = new Lemmatizer(stream);
 			}
 		}
-		public async Task Run(string[] fileNames)
+		public async Task RunCompress(string[] fileNames)
 		{
 			var compressor = new IndexCombressor("endDictFile.bin", "endIndexFile.bin", "endTebleWriterFile.bin");
 			compressor.CompressIndex("SmallIndexBackup.txt");
+			//compressor.DecompressIndex();
+			
+			
 			//var result = compressor.IntToVbr(566);
 			
 			
@@ -40,6 +44,27 @@ namespace WordDictionary.IndexCompression
 			file.Read(bytesRead);
 			var finalInt = BitConverter.ToInt32(bytesRead);
 			*/
+		}
+
+		public async Task RunCompressLargeDb()
+		{
+			var compressor = new IndexCombressor("endDictFile.bin", "endIndexFile.bin", "endTebleWriterFile.bin");
+			compressor.CompressIndex("BiggestDbBackup.txt");
+			
+		}
+
+		public void RunDeCompress() 
+		{
+			var compressor = new IndexCombressor("endDictFile.bin", "endIndexFile.bin", "endTebleWriterFile.bin");
+			var index = compressor.DecompressIndex();
+
+			var indexSearcher = new InvertedIndexSearcher(lemmatizer);
+			var res = indexSearcher.SearchOnMatrix("alice", index);
+
+			foreach (var item in res)
+			{
+				Console.WriteLine(item);
+			}
 		}
 	}
 }
